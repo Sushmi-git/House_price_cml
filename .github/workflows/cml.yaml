@@ -1,0 +1,31 @@
+name: CML Workflow
+
+on: [push]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          pip install pandas scikit-learn matplotlib
+
+      - name: Train model
+        run: python train.py
+
+      - name: Create report
+        run: |
+          echo "## Model Results" > report.md
+          cat report.txt >> report.md
+          echo "## Feature Importance" >> report.md
+          echo "![](feature_importance.png)" >> report.md
+
+      - name: Post comment
+        uses: iterative/setup-cml@v1
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: comment create report.md
