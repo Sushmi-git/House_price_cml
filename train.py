@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("house_cleaned.csv")
 
 # Select features
-features = ['area', 'bedRoom', 'bathroom']
+features = ['area', 'bedRoom', 'bathroom', 'balcony', 'floorNum' ]
 target = 'price'
 
 # Clean data
@@ -30,7 +30,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 # Train model
-model = RandomForestRegressor(n_estimators=100, random_state=42)
+model = RandomForestRegressor(max_depth = 5, n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
 # Predict
