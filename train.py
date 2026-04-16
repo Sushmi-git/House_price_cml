@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("house_cleaned.csv")
 
 # Select features
-features = ['area', 'bedRoom', 'bathroom', 'balcony', 'floorNum' ]
+features = ['area', 'bedRoom', 'bathroom', 'floorNum' ]
 target = 'price'
 
 # Clean data
