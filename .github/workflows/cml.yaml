@@ -16,6 +16,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      - name: Verify pandas install (debug step)
+        run: |
+          python -c "import pandas; print('pandas OK')"
+
       - name: Train model
         run: |
           python train.py
