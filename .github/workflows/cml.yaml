@@ -9,6 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # THIS IS THE MISSING PIECE IN YOUR PIPELINE
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
       - uses: iterative/setup-cml@v1
 
       - name: Install dependencies
@@ -16,9 +21,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      - name: Verify pandas install (debug step)
+      - name: Verify pandas install
         run: |
-          python -c "import pandas; print('pandas OK')"
+          python -c "import pandas; print('pandas installed OK')"
 
       - name: Train model
         run: |
