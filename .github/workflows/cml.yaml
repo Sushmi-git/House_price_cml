@@ -1,48 +1,41 @@
-name: house_price_prediction
+name: CML Report
 
-on: [push]
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 permissions:
   contents: write
   issues: write
   pull-requests: write
-  
+
 jobs:
   run:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
+          pip install -r requirements.txt
 
-      - name: Verify pandas install
-        run: |
-          python -c "import pandas; print('pandas installed OK')"
+      - name: Setup CML
+        uses: iterative/setup-cml@v2
 
       - name: Train model
         run: |
           python train.py
 
-      - uses: iterative/setup-cml@v1
-
-      - name: Write CML report
+      - name: Comment report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "## House Price Prediction Results" > report.md
-          echo "### Model: Random Forest Regressor" >> report.md
-          echo "" >> report.md
-          echo "### Metrics" >> report.md
-          cat report.txt >> report.md
-          echo "" >> report.md
-          echo "### Feature Importance" >> report.md
-          cml publish feature_importance.png --md >> report.md
           cml comment create report.md
