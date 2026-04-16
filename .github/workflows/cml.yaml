@@ -1,0 +1,28 @@
+name: house_price_prediction
+on: [push]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: iterative/setup-cml@v1
+
+      - name: Train model
+        run: |
+          pip install -r requirements.txt
+          python train.py
+
+      - name: Write CML report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "## Model Results" > report.md
+          cat report.txt >> report.md
+
+          echo "## Feature Importance" >> report.md
+          echo "![](feature_importance.png)" >> report.md
+
+          cml comment create report.md
